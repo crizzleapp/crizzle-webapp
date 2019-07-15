@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import AnswerForm from './AnswerForm';
 
-
 class Question extends Component {
     constructor(props) {
         super(props);
@@ -25,7 +24,7 @@ class Question extends Component {
 
     fetchAnswers() {
         const {match: {params}} = this.props;
-        axios.get(`http://localhost:9000/api/v1/questions/${params.questionId}`)
+        axios.get(`${process.env.REACT_APP_API_URL}/api/v1/questions/${params.questionId}`)
             .then(response => {
                 this.setState({question: response.data})
             });

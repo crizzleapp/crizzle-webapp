@@ -12,7 +12,7 @@ class Questions extends Component {
     }
 
     fetchQuestions() {
-        axios.get('http://localhost:9000/api/v1/questions/').then(response => {
+        axios.get(`${process.env.REACT_APP_API_URL}/api/v1/questions/`).then(response => {
             this.setState({questions: response.data});
         });
     }

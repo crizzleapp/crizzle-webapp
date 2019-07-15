@@ -3,10 +3,10 @@ import auth0 from 'auth0-js';
 class Auth {
     constructor() {
         this.auth0 = new auth0.WebAuth({
-            domain: "crizzle-backend.auth0.com",
-            audience: "https://crizzle-backend.auth0.com/userinfo",
-            clientID: "tccOo1a4t8VuceNp145z7gwnyfdOptp1",
-            redirectUri: "http://localhost:3000/callback",
+            domain: `${process.env.REACT_APP_AUTH0_DOMAIN}`,
+            audience: `https://${process.env.REACT_APP_AUTH0_DOMAIN}/userinfo`,
+            clientID: `${process.env.REACT_APP_AUTH0_CLIENTID}`,
+            redirectUri: `${process.env.REACT_APP_APP_URL}/logincallback`,
             responseType: "id_token",
             scope: "openid profile",
         });
@@ -41,19 +41,34 @@ class Auth {
                 if (!authResult || !authResult.idToken) {
                     return reject(err);
                 }
-                this.idToken = authResult.idToken;
-                this.profile = authResult.idTokenPayload;
-                this.expiresAt = authResult.idTokenPayload.exp * 1000;
+                this.setSession(authResult);
                 resolve();
             });
         });
     }
 
+    setSession(authResult) {
+        this.idToken = authResult.idToken;
+        this.profile = authResult.idTokenPayload;
+        this.expiresAt = authResult.idTokenPayload.exp * 1000;
+    }
+
     signOut() {
-        // clear id token, profile, and expiration
-        this.idToken = null;
-        this.profile = null;
-        this.expiresAt = null;
+        // Send logout request to Auth0
+        this.auth0.logout({
+            returnTo: `${process.env.REACT_APP_APP_URL}`,
+            clientID: `${process.env.REACT_APP_AUTH0_CLIENTID}`,
+        });
+    }
+
+    silentAuth() {
+        return new Promise((resolve, reject) => {
+            this.auth0.checkSession({}, (err, authResult) => {
+                if (err) return reject(err);
+                this.setSession(authResult);
+                resolve();
+            });
+        });
     }
 }
 

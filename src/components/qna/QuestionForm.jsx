@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
 import axios from 'axios';
+import auth0Client from "../Auth";
 
 class QuestionForm extends Component {
     constructor(props) {
@@ -23,9 +23,12 @@ class QuestionForm extends Component {
     }
 
     handleSubmit(event) {
-        axios.post('http://localhost:9000/api/v1/questions/', this.state).then(response => {
-            console.log(response);
-        });
+        axios.post(`${process.env.REACT_APP_API_URL}/api/v1/questions/`,
+            this.state,
+            {headers: {"Authorization": `Bearer ${auth0Client.getIdToken()}`}})
+            .then(response => {
+                console.log(response);
+            });
         event.preventDefault();
     }
 

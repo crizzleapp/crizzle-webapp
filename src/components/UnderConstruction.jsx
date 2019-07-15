@@ -6,9 +6,8 @@ function UnderConstruction() {
         <div>
             <h1>Under Construction</h1>
             <p className="lead"><code>Crizzle is a work in progress.</code></p>
-            <a href="#" className="btn btn-lg btn-primary">Learn more</a>
+            <Link to="/" className="btn btn-lg btn-dark btn-outline-light text-white">Learn more</Link>
         </div>
-
     );
 }
 

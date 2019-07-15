@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
 import axios from 'axios';
 
 class AnswerForm extends Component {
@@ -22,7 +21,7 @@ class AnswerForm extends Component {
     }
 
     handleSubmit(event) {
-        axios.post(`http://localhost:9000/api/v1/questions/${this.props.questionId}/answer`, this.state).then(response => {
+        axios.post(`${process.env.REACT_APP_API_URL}/api/v1/questions/${this.props.questionId}/answer`, this.state).then(response => {
             console.log(response);
         });
         event.preventDefault();
