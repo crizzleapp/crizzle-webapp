@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import axios from 'axios';
+import auth0Client from "../Auth";
 
 class AnswerForm extends Component {
     constructor(props) {
@@ -21,9 +22,12 @@ class AnswerForm extends Component {
     }
 
     handleSubmit(event) {
-        axios.post(`${process.env.REACT_APP_API_URL}/api/v1/questions/${this.props.questionId}/answer`, this.state).then(response => {
-            console.log(response);
-        });
+        axios.post(`${process.env.REACT_APP_API_URL}/api/v1/questions/${this.props.questionId}/answer`,
+            this.state,
+            {headers: {"Authorization": `Bearer ${auth0Client.getIdToken()}`}})
+            .then(response => {
+                console.log(response);
+            });
         event.preventDefault();
     }
 

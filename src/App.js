@@ -18,14 +18,25 @@ import auth0Client from "./components/Auth";
 
 // Refer to examples at https://getbootstrap.com/docs/4.1/examples/ for best practices
 class App extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            checkingSession: true,
+        }
+    }
+
     async componentDidMount() {
-        if (this.props.location.pathname === '/logincallback') return;
+        if (this.props.location.pathname === '/logincallback') {
+            this.setState({checkingSession: false});
+            return
+        }
         try {
             await auth0Client.silentAuth();
             this.forceUpdate();
         } catch (err) {
             if (err.error !== 'login_required') console.log(err.error());
         }
+        this.setState({checkingSession: false});
     }
 
     render() {
@@ -36,8 +47,8 @@ class App extends Component {
                         <NavBar/>
                     </header>
                     <main role="main" className="cover">
-                        <SecuredRoute path="/questions" component={Questions}/>
-                        <SecuredRoute path="/question/:questionId" component={Question}/>
+                        <SecuredRoute path="/questions" checkingSession={this.state.checkingSession} component={Questions}/>
+                        <SecuredRoute path="/question/:questionId" checkingSession={this.state.checkingSession} component={Question}/>
                         <Route path="/" exact component={UnderConstruction}/>
                         <Route path="/logincallback" exact component={LoginCallback}/>
                     </main>

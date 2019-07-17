@@ -30,7 +30,7 @@ class Auth {
         return new Date().getTime() < this.expiresAt;
     }
 
-    signIn() {
+    signIn(from) {
         this.auth0.authorize();
     }
 
