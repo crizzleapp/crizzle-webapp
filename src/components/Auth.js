@@ -41,7 +41,7 @@ class Auth {
                 if (!authResult || !authResult.idToken) {
                     return reject(err);
                 }
-                this.setSession(authResult);
+                this.setSession(authResult);  //  Enables persistent login
                 resolve();
             });
         });
