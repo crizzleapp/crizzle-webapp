@@ -13,7 +13,7 @@ function NavBar(props) {
 
     return (
         <nav className="navbar navbar-fixed-top navbar-expand-lg navbar-dark">
-            <Link className="navbar-brand" to="/"><Image style={{height: '3em'}} src={logo}/></Link>
+            <Link className="navbar-brand" to="/"><Image style={{height: '2em'}} src={logo}/></Link>
             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarLinks"
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"/>
