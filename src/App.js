@@ -1,19 +1,63 @@
-import React, {Component} from 'react';
-import logo from './logo.svg';
+// Styles
 import './App.css';
 
+// React Components
+import React, {Component} from "react";
+import {Route, withRouter} from "react-router-dom";
 
-function App() {
-    return (
-        <div className="App">
-            <header className="App-header">
-                <img src={logo} className="App-logo" alt="logo"/>
-                <p>Edit <code>src/App.js</code> and save to reload.</p>
-                <a className="App-link" href="https://reactjs.org" target="_blank" rel="noopener noreferrer">Learn
-                    React</a>
-            </header>
-        </div>
-    );
+// Custom Components
+import UnderConstruction from "./components/UnderConstruction";
+import NavBar from "./components/Navbar";
+import Questions from "./components/qna/Questions";
+import Question from "./components/qna/Question";
+
+// Auth Components
+import LoginCallback from "./components/LoginCallback";
+import SecuredRoute from "./components/SecuredRoute";
+import auth0Client from "./components/Auth";
+
+// Refer to examples at https://getbootstrap.com/docs/4.1/examples/ for best practices
+class App extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            checkingSession: true,
+        }
+    }
+
+    async componentDidMount() {
+        if (this.props.location.pathname === '/logincallback') {
+            this.setState({checkingSession: false});
+            return
+        }
+        try {
+            await auth0Client.silentAuth();
+            this.forceUpdate();
+        } catch (err) {
+            if (err.error !== 'login_required') console.log(err.error());
+        }
+        this.setState({checkingSession: false});
+    }
+
+    render() {
+        return (
+            <div className="App w-100 h-100">
+                <div className="d-flex flex-column w-100 h-100 mx-auto">
+                    <header className="mb-auto">
+                        <NavBar/>
+                    </header>
+                    <main role="main" className="cover">
+                        <SecuredRoute path="/questions" checkingSession={this.state.checkingSession} component={Questions}/>
+                        <SecuredRoute path="/question/:questionId" checkingSession={this.state.checkingSession} component={Question}/>
+                        <Route path="/" exact component={UnderConstruction}/>
+                        <Route path="/logincallback" exact component={LoginCallback}/>
+                    </main>
+                    <footer className="mt-auto">
+                    </footer>
+                </div>
+            </div>
+        );
+    }
 }
 
-export default App;
+export default withRouter(App);
