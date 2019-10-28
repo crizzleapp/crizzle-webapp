@@ -19,14 +19,6 @@ class Questions extends Component {
 
     async componentDidMount() {
         this.fetchQuestions();
-        this.timer = setInterval(() => {
-            this.fetchQuestions()
-        }, 1000);
-    }
-
-    async componentWillUnmount() {
-        clearInterval(this.timer);
-        this.timer = null;
     }
 
     render() {
