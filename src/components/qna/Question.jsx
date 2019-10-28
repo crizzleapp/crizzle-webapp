@@ -12,14 +12,6 @@ class Question extends Component {
 
     async componentDidMount() {
         this.fetchAnswers();
-        this.timer = setInterval(() => {
-            this.fetchAnswers()
-        }, 1000);
-    }
-
-    async componentWillUnmount() {
-        clearInterval(this.timer);
-        this.timer = null;
     }
 
     fetchAnswers() {
@@ -43,7 +35,7 @@ class Question extends Component {
                         <p>Answers</p>
                         {
                             question.answers.map((answer, idx) => (
-                                <p key={idx} className="lead">{answer.answer}</p>
+                                <p key={idx} className="lead">{answer}</p>
                             ))
                         }
                     </div>
