@@ -8,7 +8,7 @@ class Auth {
             clientID: `${process.env.REACT_APP_AUTH0_CLIENTID}`,
             redirectUri: `${process.env.REACT_APP_APP_URL}/logincallback`,
             responseType: "id_token",
-            scope: "openid profile",
+            scope: "openid profile email",
         });
 
         this.getProfile = this.getProfile.bind(this);

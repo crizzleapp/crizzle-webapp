@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import auth0Client from "../Auth";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
 
 class QuestionForm extends Component {
     constructor(props) {
@@ -34,17 +36,19 @@ class QuestionForm extends Component {
 
     render() {
         return (
-            <form onSubmit={this.handleSubmit}>
-                <label>
-                    Question Title
-                    <input name="title" value={this.state.title} onChange={this.handleChange}/>
-                </label>
-                <label>
-                    Details
-                    <textarea name="description" value={this.state.description} onChange={this.handleChange}/>
-                </label>
-                <input type="submit" value="Ask"/>
-            </form>
+            <Form onSubmit={this.handleSubmit}>
+                <Form.Group controlId="formQuestion">
+                    <Form.Label>Question Title</Form.Label>
+                    <Form.Control name="title" value={this.state.title} type="text" placeholder="Title"
+                                  onChange={this.handleChange}/>
+                </Form.Group>
+                <Form.Group controlId="formDescription">
+                    <Form.Label>Question Details</Form.Label>
+                    <Form.Control name="description" value={this.state.description} type="text" placeholder="Details"
+                                  onChange={this.handleChange} as="textarea" rows="5"/>
+                </Form.Group>
+                <Button type="submit">Post</Button>
+            </Form>
         )
     }
 }
