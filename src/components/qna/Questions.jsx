@@ -34,7 +34,7 @@ class Questions extends Component {
                                         <h4 className="card-title">{question.title}</h4>
                                         <p className="card-text">{question.description}</p>
                                     </div>
-                                    <div className="card-footer text-light">{question.answers} answers</div>
+                                    <div className="card-footer text-light">{question.answers.length} Answers</div>
                                 </div>
                             </Link>
                         </div>

@@ -35,7 +35,7 @@ class Question extends Component {
                         <p>Answers</p>
                         {
                             question.answers.map((answer, idx) => (
-                                <p key={idx} className="lead">{answer}</p>
+                                <p key={idx} className="lead">{answer.answer}</p>
                             ))
                         }
                     </div>

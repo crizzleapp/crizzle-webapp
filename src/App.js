@@ -7,7 +7,7 @@ import {Route, withRouter} from "react-router-dom";
 
 // Custom Components
 import UnderConstruction from "./components/UnderConstruction";
-import NavBar from "./components/Navbar";
+import Navigation from "./components/Navigation";
 import Questions from "./components/qna/Questions";
 import Question from "./components/qna/Question";
 
@@ -34,7 +34,7 @@ class App extends Component {
             await auth0Client.silentAuth();
             this.forceUpdate();
         } catch (err) {
-            if (err.error !== 'login_required') console.log(err.error());
+            if (err.error !== 'login_required') console.log(err.error);
         }
         this.setState({checkingSession: false});
     }
@@ -44,11 +44,13 @@ class App extends Component {
             <div className="App w-100 h-100">
                 <div className="d-flex flex-column w-100 h-100 mx-auto">
                     <header className="mb-auto">
-                        <NavBar/>
+                        <Navigation/>
                     </header>
                     <main role="main" className="cover">
-                        <SecuredRoute path="/questions" checkingSession={this.state.checkingSession} component={Questions}/>
-                        <SecuredRoute path="/question/:questionId" checkingSession={this.state.checkingSession} component={Question}/>
+                        <SecuredRoute path="/questions" checkingSession={this.state.checkingSession}
+                                      component={Questions}/>
+                        <SecuredRoute path="/question/:questionId" checkingSession={this.state.checkingSession}
+                                      component={Question}/>
                         <Route path="/" exact component={UnderConstruction}/>
                         <Route path="/logincallback" exact component={LoginCallback}/>
                     </main>
