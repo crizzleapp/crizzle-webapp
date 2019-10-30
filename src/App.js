@@ -15,6 +15,8 @@ import Question from "./components/qna/Question";
 import LoginCallback from "./components/LoginCallback";
 import SecuredRoute from "./components/SecuredRoute";
 import auth0Client from "./components/Auth";
+import Profile from "./components/profile/Profile";
+import About from "./components/About";
 
 // Refer to examples at https://getbootstrap.com/docs/4.1/examples/ for best practices
 class App extends Component {
@@ -51,8 +53,10 @@ class App extends Component {
                                       component={Questions}/>
                         <SecuredRoute path="/question/:questionId" checkingSession={this.state.checkingSession}
                                       component={Question}/>
+                        <SecuredRoute path="/profile" checkingSession={this.state.checkingSession} component={Profile}/>
                         <Route path="/" exact component={UnderConstruction}/>
                         <Route path="/logincallback" exact component={LoginCallback}/>
+                        <Route path="/about" component={About}/>
                     </main>
                     <footer className="mt-auto">
                     </footer>
