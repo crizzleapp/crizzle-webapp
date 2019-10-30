@@ -4,6 +4,7 @@ import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Table from "react-bootstrap/Table";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
+import {FaTrashAlt, FaPencilAlt} from "react-icons/fa";
 
 class Profile extends Component {
 
@@ -39,9 +40,11 @@ class Profile extends Component {
                         <td>{row.name}</td>
                         <td>{profile[row.key]}</td>
                         <td>
-                            <ButtonGroup>
-                                <Button variant="dark" size="sm" disabled={!editable}>Edit</Button>
-                                <Button variant="danger" size="sm" disabled={!editable}>Delete</Button>
+                            <ButtonGroup size="sm">
+                                <Button variant="warning" disabled={!editable}><FaPencilAlt
+                                    style={{verticalAlign: 'baseline'}}/></Button>
+                                <Button variant="danger" disabled={!editable}><FaTrashAlt
+                                    style={{verticalAlign: 'baseline'}}/></Button>
                             </ButtonGroup>
                         </td>
                     </tr>
