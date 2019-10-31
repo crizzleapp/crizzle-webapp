@@ -1,0 +1,43 @@
+import React from "react";
+import {NavLink} from "react-router-dom";
+import {useAuth0} from "./Auth";
+
+import Nav from "react-bootstrap/Nav";
+import Button from "react-bootstrap/Button";
+import Dropdown from "react-bootstrap/Dropdown";
+import {FaUserAlt} from "react-icons/fa";
+import Spinner from "react-bootstrap/Spinner";
+
+function AccountButton(props) {
+    const {isAuthenticated, loginWithRedirect, logout, user, loading} = useAuth0();
+    function signOut() {
+        logout();
+        props.history.replace("/");
+    }
+    const userIcon = <FaUserAlt className="mr-2" style={{verticalAlign: 'baseline'}}/>;
+    const signInButton = loading ? (
+        <Button variant="dark">
+            {userIcon}
+            <Spinner size="sm" animation="grow"/>
+        </Button>
+    ) : (
+        <Button variant="dark" onClick={() => loginWithRedirect({})}>Sign In</Button>
+    );
+
+    return (isAuthenticated && !loading) ? (
+        <Dropdown as={Nav.Item}>
+            <Dropdown.Toggle as={Button} variant="dark">
+                {userIcon}
+                <span>{user.name}</span>
+            </Dropdown.Toggle>
+            <Dropdown.Menu alignRight>
+                <Dropdown.Header>Settings</Dropdown.Header>
+                <Dropdown.Item as={NavLink} to="/profile">Profile</Dropdown.Item>
+                <Dropdown.Divider/>
+                <Dropdown.Item onClick={signOut}>Sign Out</Dropdown.Item>
+            </Dropdown.Menu>
+        </Dropdown>
+    ) : signInButton;
+}
+
+export default AccountButton;
