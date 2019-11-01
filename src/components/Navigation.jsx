@@ -13,7 +13,7 @@ function Navigation(props) {
     return (
         <Navbar expand="sm">
             <Navbar.Brand as={Link} to="/">
-                <Image style={{height: '2em'}} src={logo}/>
+                <Image style={{height: "2em"}} src={logo}/>
             </Navbar.Brand>
             <Navbar.Toggle/>
             <Navbar.Collapse>

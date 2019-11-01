@@ -10,11 +10,13 @@ import Spinner from "react-bootstrap/Spinner";
 
 function AccountButton(props) {
     const {isAuthenticated, loginWithRedirect, logout, user, loading} = useAuth0();
-    function signOut() {
+
+    const signOut = () => {
         logout();
         props.history.replace("/");
-    }
-    const userIcon = <FaUserAlt className="mr-2" style={{verticalAlign: 'baseline'}}/>;
+    };
+
+    const userIcon = <FaUserAlt className="mr-2" style={{verticalAlign: "baseline"}}/>;
     const signInButton = loading ? (
         <Button variant="dark">
             {userIcon}

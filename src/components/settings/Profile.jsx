@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {useAuth0} from "../auth/Auth";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
@@ -7,8 +7,8 @@ import ButtonGroup from "react-bootstrap/ButtonGroup";
 import {FaTrashAlt, FaPencilAlt} from "react-icons/fa";
 
 const FIELDS = [
-    {key: 'name', name: 'Name', readOnly: true},
-    {key: 'email', name: "E-mail Address", readOnly: false},
+    {key: "name", name: "Name", readOnly: true},
+    {key: "email", name: "E-mail Address", readOnly: false},
 ];
 
 
@@ -28,9 +28,9 @@ function Profile() {
                     <td className="text-right">
                         <ButtonGroup size="sm">
                             <Button variant="warning" disabled={!editable}><FaPencilAlt
-                                style={{verticalAlign: 'baseline'}}/></Button>
+                                style={{verticalAlign: "baseline"}}/></Button>
                             <Button variant="danger" disabled={!editable}><FaTrashAlt
-                                style={{verticalAlign: 'baseline'}}/></Button>
+                                style={{verticalAlign: "baseline"}}/></Button>
                         </ButtonGroup>
                     </td>
                 </tr>

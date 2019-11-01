@@ -1,5 +1,5 @@
 // Styles
-import './App.css';
+import "./App.css";
 
 // React Components
 import React, {Component} from "react";
@@ -17,7 +17,6 @@ import About from "./components/About";
 import LoginCallback from "./components/auth/LoginCallback";
 import SecuredRoute from "./components/auth/SecuredRoute";
 
-// Refer to examples at https://getbootstrap.com/docs/4.1/examples/ for best practices
 class App extends Component {
     // constructor(props) {
     //     super(props);
@@ -27,7 +26,7 @@ class App extends Component {
     // }
     //
     // async componentDidMount() {
-    //     if (this.props.location.pathname === '/logincallback') {
+    //     if (this.props.location.pathname === "/logincallback") {
     //         this.setState({checkingSession: false});
     //         return
     //     }
@@ -35,7 +34,7 @@ class App extends Component {
     //         await auth0Client.silentAuth();
     //         this.forceUpdate();
     //     } catch (err) {
-    //         if (err.error !== 'login_required') console.log(err.error);
+    //         if (err.error !== "login_required") console.log(err.error);
     //     }
     //     this.setState({checkingSession: false});
     // }
