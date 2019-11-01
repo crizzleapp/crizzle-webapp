@@ -14,8 +14,8 @@ import Profile from "./components/settings/Profile";
 import About from "./components/About";
 
 // Auth Components
-import LoginCallback from "./components/LoginCallback";
-import SecuredRoute from "./components/SecuredRoute";
+import LoginCallback from "./components/auth/LoginCallback";
+import SecuredRoute from "./components/auth/SecuredRoute";
 
 // Refer to examples at https://getbootstrap.com/docs/4.1/examples/ for best practices
 class App extends Component {

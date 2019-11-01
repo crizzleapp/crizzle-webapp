@@ -1,6 +1,6 @@
 import React from "react";
-import {NavLink} from "react-router-dom";
-import {useAuth0} from "./Auth";
+import {NavLink, withRouter} from "react-router-dom";
+import {useAuth0} from "./auth/Auth";
 
 import Nav from "react-bootstrap/Nav";
 import Button from "react-bootstrap/Button";
@@ -21,7 +21,7 @@ function AccountButton(props) {
             <Spinner size="sm" animation="grow"/>
         </Button>
     ) : (
-        <Button variant="dark" onClick={() => loginWithRedirect({})}>Sign In</Button>
+        <Button variant="dark" onClick={loginWithRedirect}>Sign In</Button>
     );
 
     return (isAuthenticated && !loading) ? (
@@ -40,4 +40,4 @@ function AccountButton(props) {
     ) : signInButton;
 }
 
-export default AccountButton;
+export default withRouter(AccountButton);

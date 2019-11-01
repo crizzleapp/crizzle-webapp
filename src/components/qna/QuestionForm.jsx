@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import axios from 'axios';
-import {useAuth0} from "../Auth";
+import {useAuth0} from "../auth/Auth";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 

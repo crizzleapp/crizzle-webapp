@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
-import axios from 'axios';
-import {useAuth0} from "../Auth";
+import {withRouter} from "react-router-dom";
+import axios from "axios";
+import {useAuth0} from "../auth/Auth";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
@@ -76,4 +77,4 @@ function AnswerForm(props) {
 //     }
 // }
 
-export default AnswerForm;
+export default withRouter(AnswerForm);

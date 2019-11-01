@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
-import axios from 'axios';
-import AnswerForm from './AnswerForm';
+import {withRouter} from "react-router-dom";
+import axios from "axios";
+import AnswerForm from "./AnswerForm";
 
 class Question extends Component {
     constructor(props) {
@@ -46,4 +47,4 @@ class Question extends Component {
     }
 }
 
-export default Question;
+export default withRouter(Question);

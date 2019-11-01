@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
-import {withRouter} from 'react-router-dom';
+import React, {Component} from "react";
+import {withRouter} from "react-router-dom";
 
 class LoginCallback extends Component {
     async componentDidMount() {
-        this.props.history.replace('/');
+        this.props.history.replace("/");
     }
 
     render() {
