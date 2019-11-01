@@ -21,7 +21,7 @@ export const Auth0Provider = ({
                                   domain = authConfig.domain,
                                   client_id = authConfig.clientId,
                                   redirect_uri = window.location.origin,
-                                  audience = authConfig.managementAudience,
+                                  audience = authConfig.managementUrl,
                                   scope = DEFAULT_SCOPES,
                                   ...initOptions
                               }) => {
