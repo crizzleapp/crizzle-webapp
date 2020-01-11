@@ -18,23 +18,25 @@ function AccountButton(props) {
 
     const userIcon = <FaUserAlt className="mr-2" style={{verticalAlign: "baseline"}}/>;
     const signInButton = loading ? (
-        <Button variant="dark">
+        <Button variant="outline-light">
             {userIcon}
             <Spinner size="sm" animation="grow"/>
         </Button>
     ) : (
-        <Button variant="dark" onClick={loginWithRedirect}>Sign In</Button>
+        <Button variant="outline-light" onClick={loginWithRedirect}>Sign In</Button>
     );
 
     return (isAuthenticated && !loading) ? (
         <Dropdown as={Nav.Item}>
-            <Dropdown.Toggle as={Button} variant="dark">
+            <Dropdown.Toggle as={Button} variant="outline-light">
                 {userIcon}
                 <span>{user.name}</span>
             </Dropdown.Toggle>
             <Dropdown.Menu alignRight>
                 <Dropdown.Header>Settings</Dropdown.Header>
+                <Dropdown.Item as={NavLink} to="/settings">Settings</Dropdown.Item>
                 <Dropdown.Item as={NavLink} to="/profile">Profile</Dropdown.Item>
+                <Dropdown.Item as={NavLink} to="/apikeys">API Keys</Dropdown.Item>
                 <Dropdown.Divider/>
                 <Dropdown.Item onClick={signOut}>Sign Out</Dropdown.Item>
             </Dropdown.Menu>

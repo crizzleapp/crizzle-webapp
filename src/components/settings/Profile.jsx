@@ -28,10 +28,10 @@ function ProfileRow({name: displayName, value, readOnly = true}) {
             </td>
             <td className="text-right">
                 <ButtonGroup size="sm">
-                    <Button variant="warning" disabled={readOnly}>
+                    <Button variant="outline-warning" disabled={readOnly}>
                         <FaPencilAlt style={{verticalAlign: "baseline"}}/>
                     </Button>
-                    <Button variant="danger" disabled={readOnly}>
+                    <Button variant="outline-danger" disabled={readOnly}>
                         <FaTrashAlt style={{verticalAlign: "baseline"}}/>
                     </Button>
                 </ButtonGroup>
@@ -45,9 +45,9 @@ function Profile() {
     const {user} = useAuth0();
 
     return (
-        <Container fluid>
+        <Container>
             <h1>User Profile</h1>
-            <Table>
+            <Table hover striped variant="dark">
                 <thead>
                 <tr>
                     <th className="text-left"/>
