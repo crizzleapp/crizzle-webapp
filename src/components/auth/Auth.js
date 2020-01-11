@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useContext, createContext} from "react";
 import createAuth0Client from "@auth0/auth0-spa-js";
+import axios from "axios";
 import authConfig from "../../authConfig";
 
 // A function that routes the user to the right place after login.
@@ -10,7 +11,6 @@ export const DEFAULT_REDIRECT_CALLBACK = (appState) => {
         appState && appState.targetUrl ? appState.targetUrl : window.location.pathname
     );
 };
-export const DEFAULT_SCOPES = "openid profile email read:current_user update:current_user_metadata create:current_user_metadata delete:current_user_metadata";
 export const Auth0Context = createContext();
 export const useAuth0 = () => useContext(Auth0Context);
 
@@ -18,11 +18,6 @@ export const useAuth0 = () => useContext(Auth0Context);
 export const Auth0Provider = ({
                                   children,
                                   onRedirectCallback = DEFAULT_REDIRECT_CALLBACK,
-                                  domain = authConfig.domain,
-                                  client_id = authConfig.clientId,
-                                  redirect_uri = window.location.origin,
-                                  audience = authConfig.managementUrl,
-                                  scope = DEFAULT_SCOPES,
                                   ...initOptions
                               }) => {
     const [isAuthenticated, setIsAuthenticated] = useState();
@@ -34,11 +29,11 @@ export const Auth0Provider = ({
     useEffect(() => {
         const initAuth0 = async () => {
             const auth0FromHook = await createAuth0Client(Object.assign(initOptions, {
-                domain,
-                client_id,
-                redirect_uri,
-                audience,
-                scope
+                domain: authConfig.domain,
+                client_id: authConfig.clientId,
+                redirect_uri: window.location.origin,
+                audience: authConfig.managementUrl,
+                scope: authConfig.scope
             }));
             setAuth0(auth0FromHook);
 
@@ -85,6 +80,37 @@ export const Auth0Provider = ({
         setUser(user);
     };
 
+    const managementRequest = async ({endpoint, method, ...rest}) => {
+        // Set defaults
+        const headers = {
+            authorization: `Bearer ${await auth0Client.getTokenSilently()}`
+        };
+        if ("headers" in rest) {
+            Object.assign(rest.headers, headers);
+        } else {
+            rest.headers = headers;
+        }
+        if (!("baseURL" in rest)) {
+            rest.baseURL = authConfig.managementUrl;
+        }
+
+        // Make request
+        axios(endpoint, {
+            method,
+            baseURL: authConfig.managementUrl,
+            ...rest
+        }).then(response => {
+            console.log("Success!");
+            console.log(response.data);
+            return response.data;
+        }).catch(error => {
+            console.log("Error!");
+            console.log(error.config);
+            console.log(error.message);
+            throw(error);
+        });
+    };
+
     return (
         <Auth0Context.Provider
             value={{
@@ -94,6 +120,7 @@ export const Auth0Provider = ({
                 popupOpen,
                 loginWithPopup,
                 handleRedirectCallback,
+                managementRequest,
                 getIdTokenClaims: (...p) => auth0Client.getIdTokenClaims(...p),
                 loginWithRedirect: (...p) => auth0Client.loginWithRedirect(...p),
                 getTokenSilently: (...p) => auth0Client.getTokenSilently(...p),
