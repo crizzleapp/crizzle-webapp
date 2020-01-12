@@ -1,35 +1,50 @@
-import React from "react";
-import {useAuth0} from "../auth/Auth";
-import Button from "react-bootstrap/Button";
-import Card from "react-bootstrap/Card";
+import React from "react"
+import {useAuth0} from "../auth/Auth"
 import Container from "react-bootstrap/Container";
-import Table from "react-bootstrap/Table";
+import Button from "react-bootstrap/Button"
 import Tabs from 'react-bootstrap/Tabs'
 import Tab from "react-bootstrap/Tab"
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Nav from 'react-bootstrap/Nav'
-import ButtonGroup from "react-bootstrap/ButtonGroup";
-import Spinner from "react-bootstrap/Spinner";
-import {FaTrashAlt, FaPencilAlt} from "react-icons/fa";
+
+import Profile from "./Profile"
+import ApiKeys from "./ApiKeys"
 
 function Settings() {
-    const {user} = useAuth0();
+    const tabs = [
+        {name: "Profile", component: <Profile/>},
+        {name: "API Keys", component: <ApiKeys/>},
+    ];
 
     return (
-        <>
-            <Tabs defaultActiveKey="profile" id="uncontrolled-tab-example">
-                <Tab eventKey="home" title="Home">
-                    <Card/>
-                </Tab>
-                <Tab eventKey="profile" title="Profile">
-                    <Card/>
-                </Tab>
-                <Tab eventKey="contact" title="Contact" disabled>
-                    <Card/>
-                </Tab>
-            </Tabs>
-        </>
+        <Container>
+            <Tab.Container id="left-tabs-example" defaultActiveKey="Profile">
+                <Row className="mb-4">
+                    <Col>
+                        <Nav.Item><h3>Settings</h3></Nav.Item>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <Nav justify variant="pills" className="flex-row">
+                            {tabs.map(({name: tabName}) => (
+                                <Nav.Item><Nav.Link eventKey={tabName}>{tabName}</Nav.Link></Nav.Item>
+                            ))}
+                        </Nav>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <Tab.Content>
+                            {tabs.map(({name: tabName, component: tabComponent}) => (
+                                <Tab.Pane eventKey={tabName} title={tabName}>{tabComponent}</Tab.Pane>
+                            ))}
+                        </Tab.Content>
+                    </Col>
+                </Row>
+            </Tab.Container>
+        </Container>
     );
 }
 

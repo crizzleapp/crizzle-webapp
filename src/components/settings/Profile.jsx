@@ -45,28 +45,25 @@ function Profile() {
     const {user} = useAuth0();
 
     return (
-        <Container>
-            <h1>User Profile</h1>
-            <Table hover striped variant="dark">
-                <thead>
-                <tr>
-                    <th className="text-left"/>
-                    <th className="text-right"/>
-                    <th className="text-right">Actions</th>
-                </tr>
-                </thead>
+        <Table hover striped variant="dark">
+            <thead>
+            <tr>
+                <th className="text-left"/>
+                <th className="text-right"/>
+                <th className="text-right">Actions</th>
+            </tr>
+            </thead>
 
-                <tbody>
-                {
-                    user &&
-                    <>
-                        <ProfileRow name="Name" value={user.name} readOnly/>
-                        <ProfileRow name="E-mail Address" value={user.email} readOnly/>
-                    </>
-                }
-                </tbody>
-            </Table>
-        </Container>
+            <tbody>
+            {
+                user &&
+                <>
+                    <ProfileRow name="Name" value={user.name} readOnly/>
+                    <ProfileRow name="E-mail Address" value={user.email} readOnly/>
+                </>
+            }
+            </tbody>
+        </Table>
     );
 }
 

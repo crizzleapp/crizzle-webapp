@@ -21,7 +21,7 @@ function SecuredRoute({component: Component, path, ...rest}) {
         fn();
     }, [loading, isAuthenticated, loginWithRedirect, path]);
 
-    const render = props => (isAuthenticated && !loading) === true ? <Component {...props}/> : loadingAnimation;
+    const render = (props) => (isAuthenticated && !loading) === true ? <Component {...props}/> : loadingAnimation;
     return <Route path={path} render={render} {...rest}/>;
 }
 

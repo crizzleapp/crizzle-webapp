@@ -62,7 +62,6 @@ export const Auth0Provider = ({
         try {
             await auth0Client.loginWithPopup(params);
         } catch (error) {
-            console.error(error);
         } finally {
             setPopupOpen(false);
         }
@@ -95,18 +94,13 @@ export const Auth0Provider = ({
         }
 
         // Make request
-        axios(endpoint, {
+        return axios(endpoint, {
             method,
             baseURL: authConfig.managementUrl,
             ...rest
-        }).then(response => {
-            console.log("Success!");
-            console.log(response.data);
+        }).then((response) => {
             return response.data;
-        }).catch(error => {
-            console.log("Error!");
-            console.log(error.config);
-            console.log(error.message);
+        }).catch((error) => {
             throw(error);
         });
     };
