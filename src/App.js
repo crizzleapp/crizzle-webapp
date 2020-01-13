@@ -14,8 +14,6 @@ import UnderConstruction from "./components/UnderConstruction"
 import Questions from "./components/qna/Questions"
 import Question from "./components/qna/Question"
 import Settings from "./components/settings/Settings"
-import Profile from "./components/settings/Profile"
-import ApiKeys from "./components/settings/ApiKeys"
 import About from "./components/About"
 
 // Auth Components
@@ -35,8 +33,6 @@ class App extends Component {
                             <SecuredRoute path="/questions" component={Questions}/>
                             <SecuredRoute path="/question/:questionId" component={Question}/>
                             <SecuredRoute path="/settings" component={Settings}/>
-                            <SecuredRoute path="/profile" component={Profile}/>
-                            <SecuredRoute path="/apikeys" component={ApiKeys}/>
                             <Route path="/" exact component={UnderConstruction}/>
                             <Route path="/logincallback" component={LoginCallback}/>
                             <Route path="/about" component={About}/>
