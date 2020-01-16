@@ -35,8 +35,6 @@ function AccountButton(props) {
             <Dropdown.Menu alignRight>
                 <Dropdown.Header>Settings</Dropdown.Header>
                 <Dropdown.Item as={NavLink} to="/settings">Settings</Dropdown.Item>
-                <Dropdown.Item as={NavLink} to="/profile">Profile</Dropdown.Item>
-                <Dropdown.Item as={NavLink} to="/apikeys">API Keys</Dropdown.Item>
                 <Dropdown.Divider/>
                 <Dropdown.Item onClick={signOut}>Sign Out</Dropdown.Item>
             </Dropdown.Menu>
