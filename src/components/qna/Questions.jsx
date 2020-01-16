@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
-import axios from 'axios';
+import React, {Component} from "react";
+import {Link} from "react-router-dom";
+import axios from "axios";
 import QuestionForm from "./QuestionForm";
 
 class Questions extends Component {
@@ -29,12 +29,12 @@ class Questions extends Component {
                     {this.state.questions && this.state.questions.map(question => (
                         <div key={question.id} className="col-sm-12 col-md-4 col-lg-3">
                             <Link to={`/question/${question.id}`}>
-                                <div className="card bg-light mb-3 text-white">
+                                <div className="card">
                                     <div className="card-body">
                                         <h4 className="card-title">{question.title}</h4>
                                         <p className="card-text">{question.description}</p>
                                     </div>
-                                    <div className="card-footer text-light">{question.answers.length} Answers</div>
+                                    <div className="card-footer">{question.answers.length} Answers</div>
                                 </div>
                             </Link>
                         </div>
