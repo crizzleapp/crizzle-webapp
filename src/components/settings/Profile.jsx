@@ -3,34 +3,19 @@ import {useAuth0} from "../auth/Auth";
 import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
-import Spinner from "react-bootstrap/Spinner";
 import {FaTrashAlt, FaPencilAlt} from "react-icons/fa";
 
-
 function ProfileRow({name: displayName, value, readOnly = true}) {
-    const {loading} = useAuth0();
-    const spinner = <Spinner animation="border" size="sm"/>;
-    const loadingAnimation = (
+    return (
         <tr>
-            <td className="text-left">{spinner}</td>
-            <td className="text-right">{spinner}</td>
-            <td className="text-right">{spinner}</td>
-        </tr>
-    );
-    return loading ? loadingAnimation : (
-        <tr>
-            <td className="text-left">
-                {displayName}
-            </td>
+            <td className="text-left">{displayName}</td>
+            <td className="text-left">{value}</td>
             <td className="text-right">
-                {value}
-            </td>
-            <td className="text-right">
-                <ButtonGroup size="sm">
-                    <Button variant="outline-warning" disabled={readOnly}>
+                <ButtonGroup>
+                    <Button variant="outline-warning" className="mr-2" disabled={readOnly}>
                         <FaPencilAlt style={{verticalAlign: "baseline"}}/>
                     </Button>
-                    <Button variant="outline-danger" disabled={readOnly}>
+                    <Button variant="outline-danger" className="mr-2" disabled={readOnly}>
                         <FaTrashAlt style={{verticalAlign: "baseline"}}/>
                     </Button>
                 </ButtonGroup>
@@ -39,23 +24,21 @@ function ProfileRow({name: displayName, value, readOnly = true}) {
     );
 }
 
-
 function Profile() {
-    const {user} = useAuth0();
+    const {loading, user} = useAuth0();
 
     return (
-        <Table hover striped variant="dark">
+        <Table responsive hover striped variant="dark">
             <thead>
             <tr>
-                <th className="text-left"/>
-                <th className="text-right"/>
+                <th className="text-left">Field</th>
+                <th className="text-left">Value</th>
                 <th className="text-right">Actions</th>
             </tr>
             </thead>
-
             <tbody>
             {
-                user &&
+                !loading && user &&
                 <>
                     <ProfileRow name="Name" value={user.name} readOnly/>
                     <ProfileRow name="E-mail Address" value={user.email} readOnly/>

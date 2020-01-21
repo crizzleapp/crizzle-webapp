@@ -1,5 +1,4 @@
 import React, {useState} from "react";
-import {withRouter} from "react-router-dom";
 import axios from "axios";
 import {useAuth0} from "../auth/Auth";
 import Form from "react-bootstrap/Form";
@@ -35,4 +34,4 @@ function AnswerForm(props) {
 }
 
 
-export default withRouter(AnswerForm);
+export default AnswerForm;

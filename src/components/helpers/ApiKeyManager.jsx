@@ -34,24 +34,34 @@ export const ApiKeyProvider = ({children}) => {
             }).then((response) => {
                 setLocalApiKeysChanged(false);
                 setRemoteApiKeysChanged(true);
-                console.log("Remote update!");
-                console.log(response);
+                console.log("Updating remote");
             });
         }
     }, [localApiKeysChanged, apiKeys, loading, user, managementRequest]);
 
     const deleteApiKey = (name) => {
-        setApiKeys({...apiKeys, [name]: undefined});
+        setApiKeys(
+            Object.keys(apiKeys).filter(key => key !== name).reduce((obj, key) => {
+                obj[key] = apiKeys[key];
+                return obj;
+            }, {})
+        );
         setLocalApiKeysChanged(true);
     };
 
-    const updateApiKey = (name, data, newName) => {
+    const updateApiKey = (name, apiKey, newName) => {
         newName = newName || name;
-        if(newName !== name) {
-            // TODO: Delete old API Key
-        }
-        setApiKeys({...apiKeys, [name]: data});
+        if (newName !== name) deleteApiKey(name);
+        setApiKeys({...apiKeys, [name]: apiKey});
         setLocalApiKeysChanged(true);
+    };
+
+    const startAdd = () => {
+    };
+    const cancelAdd = () => {
+    };
+    const confirmAdd = (name, apiKey) => {
+        updateApiKey(name, apiKey);
     };
 
     return (
@@ -61,6 +71,9 @@ export const ApiKeyProvider = ({children}) => {
                 localApiKeysChanged,
                 deleteApiKey,
                 updateApiKey,
+                startAdd,
+                cancelAdd,
+                confirmAdd,
             }}
         >
             {children}

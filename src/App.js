@@ -20,28 +20,39 @@ import About from "./components/About"
 import LoginCallback from "./components/auth/LoginCallback"
 import SecuredRoute from "./components/auth/SecuredRoute"
 
+// Context Providers
+import {Auth0Provider} from "./components/auth/Auth"
+import {ApiKeyProvider} from "./components/helpers/ApiKeyManager"
+import {BreakpointProvider} from 'react-socks'
+
 class App extends Component {
     render() {
         return (
-            <Container fluid className="w-100 h-100 bg-dark text-light text-center">
-                <BrowserRouter>
-                    <header className="mb-4">
-                        <Navigation/>
-                    </header>
-                    <main role="main" className="mb-auto">
-                        <Switch>
-                            <SecuredRoute path="/questions" component={Questions}/>
-                            <SecuredRoute path="/question/:questionId" component={Question}/>
-                            <SecuredRoute path="/settings" component={Settings}/>
-                            <Route path="/" exact component={UnderConstruction}/>
-                            <Route path="/logincallback" component={LoginCallback}/>
-                            <Route path="/about" component={About}/>
-                        </Switch>
-                    </main>
-                    <footer className="mt-auto">
-                    </footer>
-                </BrowserRouter>
-            </Container>
+            <Auth0Provider>
+                <ApiKeyProvider>
+                    <BreakpointProvider>
+                        <Container fluid className="w-100 h-100 bg-dark text-light text-center">
+                            <BrowserRouter>
+                                <header className="mb-4">
+                                    <Navigation/>
+                                </header>
+                                <main role="main" className="mb-auto">
+                                    <Switch>
+                                        <SecuredRoute path="/questions" component={Questions}/>
+                                        <SecuredRoute path="/question/:questionId" component={Question}/>
+                                        <SecuredRoute path="/settings" component={Settings}/>
+                                        <Route path="/" exact component={UnderConstruction}/>
+                                        <Route path="/logincallback" component={LoginCallback}/>
+                                        <Route path="/about" component={About}/>
+                                    </Switch>
+                                </main>
+                                <footer className="mt-auto">
+                                </footer>
+                            </BrowserRouter>
+                        </Container>
+                    </BreakpointProvider>
+                </ApiKeyProvider>
+            </Auth0Provider>
         )
     }
 }

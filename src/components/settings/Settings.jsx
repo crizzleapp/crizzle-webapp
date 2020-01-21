@@ -17,8 +17,9 @@ function Settings(props) {
     };
 
     return (
-        <Container>
-            <Tabs justify variant="pills" defaultActiveKey={tabs[0].key} onSelect={onTabChange}>
+        <Container fluid>
+            <Tabs justify variant="pills" defaultActiveKey={tabs[0].key} onSelect={onTabChange}
+                  id="settingsTabs">
                 {
                     tabs.map((tab, i) => (
                         <Tab eventKey={i} key={i} title={tab.name}>
