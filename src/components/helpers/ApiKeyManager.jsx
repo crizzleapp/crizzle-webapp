@@ -56,13 +56,12 @@ export const ApiKeyProvider = ({children}) => {
         setLocalApiKeysChanged(true);
     };
 
-    const startAdd = () => {
-    };
-    const cancelAdd = () => {
-    };
-    const confirmAdd = (name, apiKey) => {
-        updateApiKey(name, apiKey);
-    };
+    // const startEdit = (name) => {
+    // };
+    // const cancelEdit = (name) => {
+    // };
+    // const confirmEdit = (name, apiKey, newName) => {
+    // };
 
     return (
         <ApiKeyContext.Provider
@@ -71,9 +70,9 @@ export const ApiKeyProvider = ({children}) => {
                 localApiKeysChanged,
                 deleteApiKey,
                 updateApiKey,
-                startAdd,
-                cancelAdd,
-                confirmAdd,
+                // startEdit,
+                // cancelEdit,
+                // confirmEdit,
             }}
         >
             {children}

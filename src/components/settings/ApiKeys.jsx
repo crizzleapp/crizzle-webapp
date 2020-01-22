@@ -1,8 +1,5 @@
 import React, {useState, useEffect, useRef} from "react"
-
-import {useAuth0} from "../auth/Auth"
 import {useApiKeyManager} from "../helpers/ApiKeyManager"
-import {Breakpoint} from 'react-socks'
 
 import Badge from "react-bootstrap/Badge"
 import Button from "react-bootstrap/Button"
@@ -16,51 +13,210 @@ import {Formik} from 'formik'
 import * as yup from 'yup'
 import ReactJson from 'react-json-view'
 
+const noop = () => {
+};
+
+const usePrevious = (value) => {
+    const ref = useRef();
+    useEffect(() => {
+        ref.current = value;
+    });
+    return ref.current;
+};
+
+const AddApiKeyModal = ({show, onCancel = noop, onConfirm = noop}) => {
+    const {updateApiKey} = useApiKeyManager();
+    const [services, setServices] = useState([]);
+    const schema = yup.object().shape({
+        name: yup.string().required().min(3).max(64),
+        service: yup.string().required()
+    });
+    useEffect(() => {
+        setServices([
+            "Binance",
+            "Poloniex",
+            "Twitter",
+        ]);
+    }, []);
+    const cancelAdd = () => {
+        onCancel();
+    };
+    const confirmAdd = ({name, service}) => {
+        updateApiKey(name, {service, data: {}});
+        onConfirm();
+    };
+    return (
+        <Modal show={show} onHide={cancelAdd}>
+            <Modal.Header closeButton><h4>New API Key</h4></Modal.Header>
+            <Formik
+                onSubmit={confirmAdd}
+                initialValues={{name: '', service: services[0]}}
+                validationSchema={schema}
+            >
+                {({
+                      handleSubmit,
+                      handleChange,
+                      handleBlur,
+                      values,
+                      touched,
+                      isValid,
+                      errors
+                  }) => (
+                    <Form noValidate onSubmit={handleSubmit}>
+                        <Modal.Body>
+                            <Form.Group controlId="newApiKeyName">
+                                <Form.Label>Name</Form.Label>
+                                <Form.Control
+                                    name="name"
+                                    value={values.name}
+                                    onChange={handleChange}
+                                    isInvalid={!!errors.name}
+                                    isValid={touched.name && !errors.name}
+                                />
+                                <Form.Control.Feedback>Good to go!</Form.Control.Feedback>
+                                {/*<Form.Control.Feedback type="invalid">{errors.name}</Form.Control.Feedback>*/}
+                                <Form.Text>A name for your new API Key</Form.Text>
+                            </Form.Group>
+                            <Form.Group controlId="newApiKeyService">
+                                <Form.Label>Service</Form.Label>
+                                <Form.Control
+                                    as="select"
+                                    name="service"
+                                    value={values.service}
+                                    onChange={handleChange}
+                                    // isValid={!errors.service}
+                                >
+                                    {
+                                        services.map((service, i) => (
+                                            <option key={i}>{service}</option>
+                                        ))
+                                    }
+                                </Form.Control>
+                                <Form.Text>The service that this API Key belongs to</Form.Text>
+                            </Form.Group>
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button variant="outline-danger" onClick={cancelAdd}>Cancel</Button>
+                            <Button variant="success" type="submit">Submit</Button>
+                        </Modal.Footer>
+                    </Form>
+                )}
+            </Formik>
+        </Modal>
+    )
+};
+
+const ViewApiKeyModal = ({name, apiKey, show, onCancel = noop}) => {
+    return (
+        <Modal show={show} onHide={onCancel}>
+            <Modal.Header closeButton><h4>{name}</h4></Modal.Header>
+            <Modal.Body>
+                <ReactJson src={apiKey.data} theme="monokai" name={null} displayDataTypes={false}/>
+            </Modal.Body>
+            <Modal.Footer>
+                <Button variant="outline-primary" onClick={onCancel}>Close</Button>
+            </Modal.Footer>
+        </Modal>
+    )
+};
+
+const EditApiKeyModal = ({name, apiKey, show, onStart = noop, onCancel = noop, onChange = noop, onConfirm = noop}) => {
+    const {updateApiKey} = useApiKeyManager();
+    const previousShow = usePrevious(show);
+    // startEdit
+    useEffect(() => {
+        if (!previousShow && show) {
+            onStart();
+            // TODO: startEdit here
+        }
+    }, [previousShow, show, onStart]);
+    const handleFormChange = ({updated_src}) => {
+        apiKey.data = updated_src;
+        onChange();
+    };
+    const cancelEdit = () => {
+        onCancel();
+    };
+    const confirmEdit = () => {
+        updateApiKey(name, apiKey);
+        onConfirm();
+    };
+    return (
+        <Modal show={show} onHide={cancelEdit}>
+            <Modal.Header closeButton><h4>Edit API Key - "{name}"</h4></Modal.Header>
+            <Modal.Body>
+                <ReactJson
+                    src={apiKey.data}
+                    theme="monokai"
+                    name={null}
+                    displayDataTypes={false}
+                    onEdit={handleFormChange}
+                    onAdd={handleFormChange}
+                    onDelete={handleFormChange}
+                />
+            </Modal.Body>
+            <Modal.Footer>
+                <Button variant="outline-primary" onClick={cancelEdit}>Cancel</Button>
+                <Button variant="success" onClick={confirmEdit}>Save</Button>
+            </Modal.Footer>
+        </Modal>
+    )
+};
+
+const DeleteApiKeyModal = ({name, show, onCancel = noop, onConfirm = noop}) => {
+    const {deleteApiKey} = useApiKeyManager();
+    const [deleteButtonDisabled, setDeleteButtonDisabled] = useState(true);
+    const handleFormChange = (event) => {
+        setDeleteButtonDisabled(event.target.value !== name);
+    };
+    const cancelDelete = () => {
+        onCancel();
+    };
+    const confirmDelete = () => {
+        deleteApiKey(name);
+        onConfirm();
+    };
+    return (
+        <Modal show={show} onHide={cancelDelete}>
+            <Modal.Header closeButton><h4>You are about to delete "{name}"</h4></Modal.Header>
+            <Modal.Body>
+                <Form>
+                    <Form.Group>
+                        <Form.Label>To proceed, type the name of the API Key (exactly) below:</Form.Label>
+                        <Form.Control onChange={handleFormChange} role="text"/>
+                    </Form.Group>
+                </Form>
+            </Modal.Body>
+            <Modal.Footer>
+                <Button variant="outline-primary" onClick={cancelDelete}>Cancel</Button>
+                <Button variant="danger" onClick={confirmDelete} disabled={deleteButtonDisabled}>Delete</Button>
+            </Modal.Footer>
+        </Modal>
+    )
+};
+
 function ApiKeyRow({name, apiKey}) {
-    const {user, managementRequest} = useAuth0();
-    const {updateApiKey, deleteApiKey} = useApiKeyManager();
-    const [{name: originalName, apiKey: originalApiKey}, setOriginalApiKey] = useState({name, apiKey});
-    const [{name: localName, apiKey: localApiKey}, setLocalApiKey] = useState({name, apiKey});
+    const topLevelKeys = Object.keys(apiKey.data);
 
     const [viewModalOpen, setViewModalOpen] = useState(false);
     const openViewModal = () => setViewModalOpen(true);
     const closeViewModal = () => setViewModalOpen(false);
 
     const [editModalOpen, setEditModalOpen] = useState(false);
-    const startEdit = () => {
+    const openEditModal = () => {
         setEditModalOpen(true);
-        console.log("Starting edit");
     };
-    const onLocalChange = ({updated_src}) => {
-        apiKey.data = updated_src;
-        console.log("Updated local");
-        console.log(apiKey);
-    };
-    const confirmEdit = () => {
-        updateApiKey(name, apiKey);
-        setEditModalOpen(false);
-    };
-    const cancelEdit = () => {
+    const closeEditModal = () => {
         setEditModalOpen(false);
     };
 
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-    const [deleteButtonDisabled, setDeleteButtonDisabled] = useState(true);
-    const startDelete = () => {
+    const openDeleteModal = () => {
         setDeleteModalOpen(true);
     };
-    const confirmDelete = () => {
-        deleteApiKey(name);
+    const closeDeleteModal = () => {
         setDeleteModalOpen(false);
     };
-    const handleDeleteFormChange = (event) => {
-        setDeleteButtonDisabled(event.target.value !== name);
-    };
-    const cancelDelete = () => {
-        setDeleteModalOpen(false);
-    };
-
-    const topLevelKeys = Object.keys(apiKey.data);
 
     return (
         <>
@@ -79,92 +235,48 @@ function ApiKeyRow({name, apiKey}) {
                         <Button variant="outline-success" className="mr-2" onClick={openViewModal}>
                             <FaEye style={{verticalAlign: "baseline"}}/>
                         </Button>
-                        <Button variant="outline-warning" className="mr-2" onClick={startEdit}>
+                        <Button variant="outline-warning" className="mr-2" onClick={openEditModal}>
                             <FaPencilAlt style={{verticalAlign: "baseline"}}/>
                         </Button>
-                        <Button variant="outline-danger" className="mr-2" onClick={startDelete}>
+                        <Button variant="outline-danger" className="mr-2" onClick={openDeleteModal}>
                             <FaTrashAlt style={{verticalAlign: "baseline"}}/>
                         </Button>
                     </ButtonGroup>
                 </td>
             </tr>
-            <Modal show={viewModalOpen} onHide={closeViewModal}>
-                <Modal.Header closeButton><h4>{name}</h4></Modal.Header>
-                <Modal.Body>
-                    <ReactJson src={apiKey.data} theme="monokai" name={null} displayDataTypes={false}/>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="outline-primary" onClick={closeViewModal}>Close</Button>
-                    <Button variant="warning" onClick={startEdit}>Edit</Button>
-                </Modal.Footer>
-            </Modal>
-            <Modal show={editModalOpen} onHide={cancelEdit}>
-                <Modal.Header closeButton><h4>Edit API Key - "{name}"</h4></Modal.Header>
-                <Modal.Body>
-                    <ReactJson
-                        src={apiKey.data}
-                        theme="monokai"
-                        name={null}
-                        displayDataTypes={false}
-                        onEdit={onLocalChange}
-                        onAdd={onLocalChange}
-                        onDelete={onLocalChange}
-                    />
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="outline-primary" onClick={cancelEdit}>Cancel</Button>
-                    <Button variant="success" onClick={confirmEdit}>Save</Button>
-                </Modal.Footer>
-            </Modal>
-            <Modal show={deleteModalOpen} onHide={cancelDelete}>
-                <Modal.Header closeButton><h4>You are about to delete "{name}"</h4></Modal.Header>
-                <Modal.Body>
-                    <Form>
-                        <Form.Group>
-                            <Form.Label>To proceed, type the name of the API Key (exactly) below:</Form.Label>
-                            <Form.Control onChange={handleDeleteFormChange} role="text"/>
-                        </Form.Group>
-                    </Form>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="outline-primary" onClick={cancelDelete}>Cancel</Button>
-                    <Button variant="danger" onClick={confirmDelete} disabled={deleteButtonDisabled}>Delete</Button>
-                </Modal.Footer>
-            </Modal>
+            <ViewApiKeyModal
+                name={name}
+                apiKey={apiKey}
+                show={viewModalOpen}
+                onHide={closeViewModal}
+            />
+            <EditApiKeyModal
+                name={name}
+                apiKey={apiKey}
+                show={editModalOpen}
+                onCancel={closeEditModal}
+                onConfirm={closeEditModal}
+            />
+            <DeleteApiKeyModal
+                name={name}
+                apiKey={apiKey}
+                show={deleteModalOpen}
+                onCancel={closeDeleteModal}
+                onConfirm={closeDeleteModal}
+            />
         </>
     );
 }
 
 function ApiKeys() {
-    const {user, loading} = useAuth0();
-    const {apiKeys, startAdd, cancelAdd, confirmAdd} = useApiKeyManager();
-    const [services, setServices] = useState([]);
+    const {apiKeys} = useApiKeyManager();
     const [modalOpen, setModalOpen] = useState(false);
-    const startAddApiKey = () => {
+    const openModal = () => {
         setModalOpen(true);
-        startAdd();
     };
-    const confirmAddApiKey = ({name, service}) => {
-        confirmAdd(name, {service, data: {}});
+    const closeModal = () => {
         setModalOpen(false);
     };
-    const cancelAddApiKey = () => {
-        cancelAdd();
-        setModalOpen(false);
-    };
-    const schema = yup.object().shape({
-        name: yup.string().required().min(3).max(64),
-        service: yup.string().required()
-    });
-
-    useEffect(() => {
-        setServices([
-            "Binance",
-            "Poloniex",
-            "Twitter",
-        ]);
-    }, []);
-
     return (
         <>
             <Table responsive hover striped variant="dark">
@@ -184,64 +296,8 @@ function ApiKeys() {
                 }
                 </tbody>
             </Table>
-            <Button variant="outline-success" onClick={startAddApiKey}>Add API Key</Button>
-            <Modal show={modalOpen} onHide={cancelAddApiKey}>
-                <Modal.Header closeButton><h4>New API Key</h4></Modal.Header>
-                <Formik
-                    onSubmit={confirmAddApiKey}
-                    initialValues={{name: '', service: services[0]}}
-                    validationSchema={schema}
-                >
-                    {({
-                          handleSubmit,
-                          handleChange,
-                          handleBlur,
-                          values,
-                          touched,
-                          isValid,
-                          errors
-                      }) => (
-                        <Form noValidate onSubmit={handleSubmit}>
-                            <Modal.Body>
-                                <Form.Group controlId="newApiKeyName">
-                                    <Form.Label>Name</Form.Label>
-                                    <Form.Control
-                                        name="name"
-                                        value={values.name}
-                                        onChange={handleChange}
-                                        isInvalid={!!errors.name}
-                                        isValid={touched.name && !errors.name}
-                                    />
-                                    <Form.Control.Feedback>Good to go!</Form.Control.Feedback>
-                                    {/*<Form.Control.Feedback type="invalid">{errors.name}</Form.Control.Feedback>*/}
-                                    <Form.Text>A name for your new API Key</Form.Text>
-                                </Form.Group>
-                                <Form.Group controlId="newApiKeyService">
-                                    <Form.Label>Service</Form.Label>
-                                    <Form.Control
-                                        as="select"
-                                        name="service"
-                                        value={values.service}
-                                        onChange={handleChange}
-                                        // isValid={!errors.service}
-                                    >
-                                        {
-                                            services.map((service, i) => (
-                                                <option key={i}>{service}</option>
-                                            ))
-                                        }
-                                    </Form.Control>
-                                    <Form.Text>The service that this API Key belongs to</Form.Text>
-                                </Form.Group>
-                            </Modal.Body>
-                            <Modal.Footer>
-                                <Button variant="outline-danger" onClick={cancelAddApiKey}>Cancel</Button>
-                                <Button variant="success" type="submit">Submit</Button>
-                            </Modal.Footer>
-                        </Form>
-                    )}
-                </Formik>
-            </Modal>
+            <Button variant="outline-success" onClick={openModal}>Add API Key</Button>
+            <AddApiKeyModal show={modalOpen} onCancel={closeModal} onConfirm={closeModal}/>
         </>
     )
 }

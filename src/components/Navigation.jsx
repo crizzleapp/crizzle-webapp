@@ -13,7 +13,7 @@ function Navigation(props) {
     return (
         <Navbar fixed expand="lg" className="navbar-dark">
             <Navbar.Brand as={Link} to="/">
-                <Image style={{height: "2em"}} src={logo}/>
+                <Image style={{height: "2em"}} src={logo} alt="Crizzle Logo"/>
             </Navbar.Brand>
             <Navbar.Toggle/>
             <Navbar.Collapse>
