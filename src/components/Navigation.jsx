@@ -11,9 +11,9 @@ const logo = require("../assets/crizzle_logo.png");
 
 function Navigation(props) {
     return (
-        <Navbar expand="sm" className="navbar-dark">
+        <Navbar fixed expand="lg" className="navbar-dark">
             <Navbar.Brand as={Link} to="/">
-                <Image style={{height: "2em"}} src={logo}/>
+                <Image style={{height: "2em"}} src={logo} alt="Crizzle Logo"/>
             </Navbar.Brand>
             <Navbar.Toggle/>
             <Navbar.Collapse>
