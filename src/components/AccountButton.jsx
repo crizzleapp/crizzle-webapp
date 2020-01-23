@@ -12,8 +12,7 @@ function AccountButton(props) {
     const {isAuthenticated, loginWithRedirect, logout, user, loading} = useAuth0();
 
     const signOut = () => {
-        logout();
-        props.history.replace("/");
+        logout({returnTo: window.location.origin.toString()});
     };
 
     const userIcon = <FaUserAlt className="mr-2" style={{verticalAlign: "baseline"}}/>;
