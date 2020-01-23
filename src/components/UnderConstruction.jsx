@@ -9,8 +9,8 @@ function UnderConstruction() {
     return (
         <div>
             <h1>Under Construction</h1>
-            <p className="lead"><Image src={logoPath} style={{height: "1.2em"}}/><code> is a work in progress.</code></p>
-            <Link to="/about"><Button size="lg">Learn more</Button></Link>
+            <p className="lead"><Image alt="Crizzle logo" src={logoPath} style={{height: "1.2em"}}/><code> is a work in progress.</code></p>
+            <Link to="/about"><Button size="lg">About Crizzle</Button></Link>
         </div>
     );
 }
