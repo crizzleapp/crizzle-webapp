@@ -28,7 +28,7 @@ function AccountButton(props) {
 
     return (isAuthenticated && !loading) ? (
         <Dropdown as={Nav.Item}>
-            <Dropdown.Toggle as={Button} variant="outline-light">
+            <Dropdown.Toggle as={Button} variant="outline-light" aria-label="account">
                 {userIcon}
                 <span>{user.name}</span>
             </Dropdown.Toggle>
