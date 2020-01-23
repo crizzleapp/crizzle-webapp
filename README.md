@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/crizzleapp/crizzle-webapp.svg?branch=master)](https://travis-ci.org/crizzleapp/crizzle-webapp)
+[![Test Coverage](https://codecov.io/gh/crizzleapp/crizzle-webapp/branch/master/graph/badge.svg)](https://codecov.io/gh/crizzleapp/crizzle-webapp)
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
