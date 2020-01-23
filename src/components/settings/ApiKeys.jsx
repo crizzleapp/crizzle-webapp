@@ -248,7 +248,7 @@ function ApiKeyRow({name, apiKey}) {
                 name={name}
                 apiKey={apiKey}
                 show={viewModalOpen}
-                onHide={closeViewModal}
+                onCancel={closeViewModal}
             />
             <EditApiKeyModal
                 name={name}
