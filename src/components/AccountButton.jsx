@@ -12,8 +12,7 @@ function AccountButton(props) {
     const {isAuthenticated, loginWithRedirect, logout, user, loading} = useAuth0();
 
     const signOut = () => {
-        logout();
-        props.history.replace("/");
+        logout({returnTo: window.location.origin.toString()});
     };
 
     const userIcon = <FaUserAlt className="mr-2" style={{verticalAlign: "baseline"}}/>;
@@ -28,7 +27,7 @@ function AccountButton(props) {
 
     return (isAuthenticated && !loading) ? (
         <Dropdown as={Nav.Item}>
-            <Dropdown.Toggle as={Button} variant="outline-light">
+            <Dropdown.Toggle as={Button} variant="outline-light" aria-label="account">
                 {userIcon}
                 <span>{user.name}</span>
             </Dropdown.Toggle>

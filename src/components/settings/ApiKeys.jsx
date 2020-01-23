@@ -232,13 +232,13 @@ function ApiKeyRow({name, apiKey}) {
                 </td>
                 <td className="align-middle text-right">
                     <ButtonGroup>
-                        <Button variant="outline-success" className="mr-2" onClick={openViewModal}>
+                        <Button variant="outline-success" className="mr-2" onClick={openViewModal} aria-label={`view ${name}`}>
                             <FaEye style={{verticalAlign: "baseline"}}/>
                         </Button>
-                        <Button variant="outline-warning" className="mr-2" onClick={openEditModal}>
+                        <Button variant="outline-warning" className="mr-2" onClick={openEditModal} aria-label={`edit ${name}`}>
                             <FaPencilAlt style={{verticalAlign: "baseline"}}/>
                         </Button>
-                        <Button variant="outline-danger" className="mr-2" onClick={openDeleteModal}>
+                        <Button variant="outline-danger" className="mr-2" onClick={openDeleteModal} aria-label={`delete ${name}`}>
                             <FaTrashAlt style={{verticalAlign: "baseline"}}/>
                         </Button>
                     </ButtonGroup>
@@ -248,7 +248,7 @@ function ApiKeyRow({name, apiKey}) {
                 name={name}
                 apiKey={apiKey}
                 show={viewModalOpen}
-                onHide={closeViewModal}
+                onCancel={closeViewModal}
             />
             <EditApiKeyModal
                 name={name}

@@ -7,13 +7,13 @@ import Nav from "react-bootstrap/Nav";
 
 import AccountButton from "./AccountButton";
 
-const logo = require("../assets/crizzle_logo.png");
+const logoPath = `${process.env.PUBLIC_URL}/logo-primary.png`;
 
 function Navigation(props) {
     return (
         <Navbar fixed expand="lg" className="navbar-dark">
             <Navbar.Brand as={Link} to="/">
-                <Image style={{height: "2em"}} src={logo} alt="Crizzle Logo"/>
+                <Image style={{height: "2em"}} src={logoPath} alt="Crizzle logo"/>
             </Navbar.Brand>
             <Navbar.Toggle/>
             <Navbar.Collapse>
