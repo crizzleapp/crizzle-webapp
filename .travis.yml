@@ -9,3 +9,6 @@ cache:
     - node_modules
 script:
   - npm test -- --coverage && codecov
+notifications:
+  email:
+    - on_failure: change
