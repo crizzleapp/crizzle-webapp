@@ -5,7 +5,7 @@ import Button from "react-bootstrap/Button";
 
 const logoPath = `${process.env.PUBLIC_URL}/logo-primary.png`;
 
-function UnderConstruction() {
+function Dashboard() {
     return (
         <div>
             <h1>Under Construction</h1>
@@ -15,4 +15,4 @@ function UnderConstruction() {
     );
 }
 
-export default UnderConstruction;
+export default Dashboard;

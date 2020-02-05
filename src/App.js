@@ -10,7 +10,7 @@ import Navigation from "./components/Navigation"
 import Container from "react-bootstrap/Container"
 
 // Site Components
-import UnderConstruction from "./components/UnderConstruction"
+import Dashboard from "./components/Dashboard"
 import Questions from "./components/qna/Questions"
 import Question from "./components/qna/Question"
 import Settings from "./components/settings/Settings"
@@ -41,7 +41,7 @@ class App extends Component {
                                         <SecuredRoute path="/questions" component={Questions}/>
                                         <SecuredRoute path="/question/:questionId" component={Question}/>
                                         <SecuredRoute path="/settings" component={Settings}/>
-                                        <Route path="/" exact component={UnderConstruction}/>
+                                        <Route path="/" exact component={Dashboard}/>
                                         <Route path="/logincallback" component={LoginCallback}/>
                                         <Route path="/about" component={About}/>
                                     </Switch>
