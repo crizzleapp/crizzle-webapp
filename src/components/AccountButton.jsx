@@ -1,12 +1,13 @@
-import React from "react";
-import {NavLink, withRouter} from "react-router-dom";
-import {useAuth0} from "./auth/Auth";
+import React from "react"
+import {NavLink, withRouter} from "react-router-dom"
+import {useAuth0} from "./auth/Auth"
 
-import Nav from "react-bootstrap/Nav";
-import Button from "react-bootstrap/Button";
-import Dropdown from "react-bootstrap/Dropdown";
-import {FaUserAlt} from "react-icons/fa";
-import Spinner from "react-bootstrap/Spinner";
+import Nav from "react-bootstrap/Nav"
+import Button from "react-bootstrap/Button"
+import Dropdown from "react-bootstrap/Dropdown"
+import Spinner from "react-bootstrap/Spinner"
+
+import {Person as FaUserAlt} from "@material-ui/icons"
 
 function AccountButton(props) {
     const {isAuthenticated, loginWithRedirect, logout, user, loading} = useAuth0();

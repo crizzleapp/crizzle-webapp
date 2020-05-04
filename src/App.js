@@ -1,13 +1,13 @@
 // Styles
 import "./App.css"
+import CssBaseline from '@material-ui/core/CssBaseline';
 
 // React Components
-import React, {Component} from "react"
+import React from "react"
 import {Route, BrowserRouter, Switch} from "react-router-dom"
 
 // Structural
 import Navigation from "./components/Navigation"
-import Container from "react-bootstrap/Container"
 
 // Site Components
 import Dashboard from "./components/Dashboard"
@@ -20,23 +20,31 @@ import About from "./components/About"
 import LoginCallback from "./components/auth/LoginCallback"
 import SecuredRoute from "./components/auth/SecuredRoute"
 
-// Context Providers
-import {Auth0Provider} from "./components/auth/Auth"
-import {ApiKeyProvider} from "./components/helpers/ApiKeyManager"
-import {BreakpointProvider} from 'react-socks'
+// Material Theming
+import {ThemeProvider} from "@material-ui/core/styles"
+import {theme} from "./theme"
 
-class App extends Component {
-    render() {
-        return (
-            <Auth0Provider>
-                <ApiKeyProvider>
-                    <BreakpointProvider>
-                        <Container fluid className="w-100 h-100 bg-dark text-light text-center">
-                            <BrowserRouter>
-                                <header className="mb-4">
-                                    <Navigation/>
-                                </header>
-                                <main role="main" className="mb-auto">
+// Context Providers
+import {Auth0Provider} from "./components/auth/Auth";
+import {ApiKeyProvider} from "./components/helpers/ApiKeyManager";
+import {BreakpointProvider} from "react-socks";
+
+import {useDefaultStyles} from "./theme";
+
+function App() {
+    const classes = useDefaultStyles();
+
+    return (
+        <Auth0Provider>
+            <ApiKeyProvider>
+                <BreakpointProvider>
+                    <ThemeProvider theme={theme}>
+                        <CssBaseline/>
+                        <BrowserRouter>
+                            <div className={classes.root}>
+                                <Navigation/>
+                                <div className={classes.toolbar}/>
+                                <main role="main" className={classes.content}>
                                     <Switch>
                                         <SecuredRoute path="/questions" component={Questions}/>
                                         <SecuredRoute path="/question/:questionId" component={Question}/>
@@ -46,15 +54,15 @@ class App extends Component {
                                         <Route path="/about" component={About}/>
                                     </Switch>
                                 </main>
-                                <footer className="mt-auto">
-                                </footer>
-                            </BrowserRouter>
-                        </Container>
-                    </BreakpointProvider>
-                </ApiKeyProvider>
-            </Auth0Provider>
-        )
-    }
+                                {/*<footer className="mt-auto">*/}
+                                {/*</footer>*/}
+                            </div>
+                        </BrowserRouter>
+                    </ThemeProvider>
+                </BreakpointProvider>
+            </ApiKeyProvider>
+        </Auth0Provider>
+    )
 }
 
 export default App

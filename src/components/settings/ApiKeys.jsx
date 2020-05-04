@@ -270,6 +270,7 @@ function ApiKeyRow({name, apiKey}) {
 
 function ApiKeys() {
     const {apiKeys} = useApiKeyManager();
+    console.log(apiKeys);
     const [modalOpen, setModalOpen] = useState(false);
     const openModal = () => {
         setModalOpen(true);
@@ -291,6 +292,8 @@ function ApiKeys() {
                 <tbody>
                 {
                     Object.entries(apiKeys).map(([name, apiKey]) => {
+                        console.log(name);
+                        console.log(apiKey);
                         return (<ApiKeyRow apiKey={apiKey} name={name} key={name}/>)
                     })
                 }
