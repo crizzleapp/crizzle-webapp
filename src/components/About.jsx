@@ -9,7 +9,7 @@ function About() {
     return (
         <div>
             <Image src={logoPath}/>
-            <p className="lead">Is an algorithmic trading bot service.</p>
+            <p className="lead">Is under construction, with an undefined timeline. Check back in a few months or decades maybe?</p>
             <Link to="/"><Button size="lg">Go Home</Button></Link>
         </div>
     );
